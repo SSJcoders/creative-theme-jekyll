@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Trading Cards</title>
+</head>
+<style>
+    /* Page background color */
+    body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header style */
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+    }
+
+    /* Container for player cards */
+    .players-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    /* Player card style */
+    .player-card {
+        width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff; /* White background */
+        text-align: left;
+        margin-bottom: 20px;
+        transition: transform 0.3s;
+    }
+
+    .player-card:hover {
+        transform: scale(1.05); /* Zoom in on hover */
+        background-color: #f2f2f2; /* Light gray background on hover */
+    }
+
+    /* Player name style */
+    .player-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #009688; /* Green color for player names */
+        margin-bottom: 10px;
+    }
+
+    /* Player information style */
+    .player-info {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #333; /* Darker text color for player information */
+    }
+
+    /* Styling for individual player data items */
+    .player-info p {
+        margin: 0;
+    }
+
+    /* Add a border for the player cards */
+    .player-card {
+        border: 2px solid #009688; /* Green border */
+    }
+
+    /* Style the player card heading */
+    .player-card h3 {
+        color: #009688; /* Green color for headings */
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+</style>
+<body>
+    <h1>Sports Trading Cards</h1>
+    
+    <!-- Form to create a new card -->
+    <h2>Create a New Card</h2>
+    <form id="createCardForm">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" required>
+        <label for="team">Team:</label>
+        <input type="text" id="team" required>
+        <button type="submit">Create Card</button>
+    </form>
+
+    <!-- Display existing cards -->
+    <h2>Existing Cards</h2>
+    <ul id="cardList"></ul>
+    <h2>API Response</h2>
+    <div id="apiResponse">
+    <table id="apiResponseTable">
+        <!-- API response table will be inserted here -->
+    </table>
+</div>
+    <script>
+        // Sample data for trading cards (you would replace this with data from a database)
+        let tradingCards = [
+            { id: 1, playerName: "Lebron James", team: "Los Angeles Lakers" },
+            { id: 2, playerName: "Stephen Curry", team: "Golden State Warriors" },
+            { id: 3, playerName: "Patrick Mahomes", team: "Kansas City Cheifs"},
+            { id: 5, playerName: "Odell Beckham Jr", team: "Baltiomore Ravens"},
+            { id: 6, playerName: "Josh Allen", team: "Buffalo Bills"},
+            { id: 7, playerName: "Zion Williamson", team: "New Orleans Pelicans"},
+            { id: 8, playerName: "Ja Morant", team: "Memphis Grizzlies"},
+            { id: 9, playerName: "Aaron Rodgers", team: "New York Jets"},
+            { id: 10, playerName: "Justin Jefferson", team: "Minnesota Vikings"},
+            { id: 11, playerName: "Joe Burrow", team: "Cincinati Bengals"},
+            { id: 12, playerName: "Deshaun Watson", team: "Cleveland Browns"},
+            { id: 13, playerName: "Amari Cooper", team: "Cleveland Browns"},
+            { id: 14, playerName: "Matt Stafford", team: "Los Angeles Rams"},
+            { id: 15, playerName: "Tyreek Hill", team: "Miami Dolphins"},
+            { id: 16, playerName: "Jaylen Waddle", team: "Miami Dolphins"},
+            { id: 17, playerName: "Joe Burrow", team: "Cincinati Bengals"},
+
+
+
+        ];
+
+        // Function to display cards
+        function displayCards() {
+            const cardList = document.getElementById("cardList");
+            cardList.innerHTML = ""; // Clear the existing list
+
+            tradingCards.forEach(card => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${card.playerName}</strong> - Team: ${card.team} 
+                    <button onclick="editCard(${card.id})">Edit</button>
+                    <button onclick="deleteCard(${card.id})">Delete</button>`;
+                cardList.appendChild(listItem);
+            });
+        }
+
+        // Function to create a new card
+        function createCard(event) {
+            event.preventDefault();
+
+            const playerName = document.getElementById("playerName").value;
+            const team = document.getElementById("team").value;
+
+            // Generate a unique ID (you may need a better way to do this in a real application)
+            const id = Date.now();
+
+            // Create a new card object
+            const newCard = { id, playerName, team };
+
+            // Add the new card to the list
+            tradingCards.push(newCard);
+
+            // Clear the form
+            document.getElementById("playerName").value = "";
+            document.getElementById("team").value = "";
+
+            // Display the updated list of cards
+            displayCards();
+        }
+
+        // Function to delete a card
+        function deleteCard(id) {
+            tradingCards = tradingCards.filter(card => card.id !== id);
+            displayCards();
+        }
+
+        // Function to edit a card (you can implement an edit form)
+        function editCard(id) {
+            const cardToEdit = tradingCards.find(card => card.id === id);
+            if (cardToEdit) {
+                // Implement an edit form with pre-filled data
+                // You can use the same form as the "Create a New Card" form with pre-filled values
+                document.getElementById("playerName").value = cardToEdit.playerName;
+                document.getElementById("team").value = cardToEdit.team;
+            }
+        }
+
+        // Attach event listeners
+        document.getElementById("createCardForm").addEventListener("submit", createCard);
+
+        // Display the initial list of cards
+        displayCards();
+    // Function to fetch and display the API response
+    async function fetchAndDisplayApiResponse() {
+            const apiUrl = 'https://api-nba-v1.p.rapidapi.com/players?team=1&season=2021';
+            const apiOptions = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'b1182b6a64mshff6fcbeabf69dc2p199d99jsn12adc869f7a0',
+                    'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, apiOptions);
+                const data = await response.json();
+
+                // Display the API response in the HTML element
+                const apiResponseElement = document.getElementById("apiResponse");
+
+                // Clear the existing content
+                apiResponseElement.innerHTML = '';
+
+                // Create a <pre> element for formatted JSON response
+                const preElement = document.createElement("pre");
+                preElement.textContent = JSON.stringify(data, null, 2);
+
+                // Append the <pre> element to the API response div
+                apiResponseElement.appendChild(preElement);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // ... (your existing JavaScript code) ...
+
+        // Fetch the API data when the page loads
+        window.addEventListener("load", fetchAndDisplayApiResponse);
+    </script>
+    <div id="apiResponse">
+        <h2>API Response</h2>
+        <table id="apiResponseTable">
+            <!-- API response table will be inserted here -->
+        </table>
+    </div>
+    
+    <script>
+        // ... (your existing JavaScript code) ...
+    
+        // Function to fetch and display the API response in a table
+        async function fetchAndDisplayApiResponse() {
+            // ... (provided JavaScript code for fetching and displaying API data in a table) ...
+        }
+    
+        // ... (your existing JavaScript code) ...
+    
+        // Fetch the API data when the page loads
+        window.addEventListener("load", fetchAndDisplayApiResponse);
+    </script>
+    
+    <!-- ... (your existing closing HTML tags) ... -->
+    
+    
+    
+    
+    
+    
+</body>
+</html>
