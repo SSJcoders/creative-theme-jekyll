@@ -123,6 +123,11 @@
     <main class="middle">
         <input type="number" id="inputNumber" class="inputNumber" />
         <div class="middle">
+            <form name="flexForm">
+                <label><input type="radio" name="fDTypes" value="wrap" checked/>wrap</label>
+                <label><input type="radio" name="fDTypes" value="nowrap"/>nowrap</label>
+                <label><input type="radio" name="fDTypes" value="wrap-reverse"/>wrap-reverse</label>
+              </form>
             <input type="button" value="click" class="fnBtn" onclick="createNumberBox()" />
         </div>
         <div id="numberBox"></div>
