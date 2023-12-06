@@ -130,65 +130,117 @@
               </form>
             <input type="button" value="click" class="fnBtn" onclick="createNumberBox()" />
         </div>
-        <div id="numberBox"></div>
+        <div id="numberBox1"></div>
+        <div id="numberBox2"></div>
         
     </main>
 
     <script>
-        const numberBox = document.getElementById("numberBox");
+        const numberBox1 = document.getElementById("numberBox1");
+        const numberBox2 = document.getElementById("numberBox2");
         function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
-        }
+    
         function delay(time) {
             return new Promise(resolve => setTimeout(resolve, time));
         }
-
-        async function createNumberBox() {
+    
+        async function bubbleSort() {
             const inputBox = document.getElementById("inputNumber");
-            var ans = [];
-            var isFive = 1;
-            var next = 0;
-            numberBox.innerHTML = ``;
-            for (var t = 1; t <= inputBox.value; t++) {
-                ans.push(t);
-            }
-            shuffleArray(ans)
-            for (var i = 1; i <= inputBox.value; i++) {
-                
-                numberBox.innerHTML += `<div id = "${i}" class="numberBtn">${ans[i-1]}</div>`;
-                
-                if (isFive == 5) {
-                    numberBox.innerHTML += `<br />`;
-                    isFive = 0;
-                }
-                isFive += 1;
-            }
             for (var i = 0; i < inputBox.value - 1; i++) {
                 for (var j = 0; j < inputBox.value - i - 1; j++) {
-                    var currentId = j + 1;
-                    var nextId = j + 2;
-
+                    var currentId = "bubble" + (j + 1);
+                    var nextId = "bubble" + (j + 2);
+    
                     var currentDiv = document.getElementById(currentId);
                     var nextDiv = document.getElementById(nextId);
-
+    
                     currentDiv.style.backgroundColor = 'red';
                     nextDiv.style.backgroundColor = 'red';
                     await delay(300);
-
+    
                     if (parseInt(currentDiv.innerHTML) > parseInt(nextDiv.innerHTML)) {
                         var temp = currentDiv.innerHTML;
                         currentDiv.innerHTML = nextDiv.innerHTML;
                         nextDiv.innerHTML = temp;
                     }
-
+    
                     currentDiv.style.backgroundColor = 'dimgrey';
                     nextDiv.style.backgroundColor = 'dimgrey';
                     await delay(300);
                 }
             }
+        }
+    
+        async function insertionSort() {
+            const inputBox = document.getElementById("inputNumber");
+            for (var i = 1; i < inputBox.value; i++) {
+                var currentId = i;
+
+                var currentDiv = document.getElementById("insert" + currentId);
+                var currentValue = parseInt(currentDiv.innerHTML);
+    
+                var j = i;
+    
+                while (j >= 0 && parseInt(document.getElementById("insert" + (j + 1)).innerHTML) < parseInt(document.getElementById("insert" + j).innerHTML)) {
+                    var currentDiv = document.getElementById("insert" + j);
+                    var nextDiv = document.getElementById("insert" + (j + 1));
+
+                    currentDiv.style.backgroundColor = 'red';
+                    nextDiv.style.backgroundColor = 'red';
+                    await delay(300);
+
+                    // Swap the elements
+                    var temp = currentDiv.innerHTML;
+                    currentDiv.innerHTML = nextDiv.innerHTML;
+                    nextDiv.innerHTML = temp;
+
+                    currentDiv.style.backgroundColor = 'dimgrey';
+                    nextDiv.style.backgroundColor = 'dimgrey';
+                    await delay(300);
+
+                    j--;
+                }
+            }
+        }
+    
+        async function createNumberBox() {
+            const inputBox = document.getElementById("inputNumber");
+            var ans = [];
+            var isFive = 1;
+            var next = 0;
+            numberBox1.innerHTML = ``;
+            numberBox2.innerHTML = ``;
+            for (var t = 1; t <= inputBox.value; t++) {
+                ans.push(t);
+            }
+            shuffleArray(ans);
+            for (var i = 1; i <= inputBox.value; i++) {
+                numberBox1.innerHTML += `<div id="bubble${i}" class="numberBtn">${ans[i - 1]}</div>`;
+                if (isFive == 5) {
+                    numberBox1.innerHTML += `<br />`;
+                    isFive = 0;
+                }
+                isFive += 1;
+            }
+            for (var t = 1; t <= inputBox.value; t++) {
+                ans.push(t);
+            }
+
+            for (var i = 1; i <= inputBox.value; i++) {
+                numberBox2.innerHTML += `<div id="insert${i}" class="numberBtn">${ans[i - 1]}</div>`;
+                if (isFive == 5) {
+                    numberBox2.innerHTML += `<br />`;
+                    isFive = 0;
+                }
+                isFive += 1;
+            }
+            // Run both sorting algorithms concurrently
+            await Promise.all([bubbleSort(), insertionSort()]);
         }
     </script>
 </html>
