@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>SSJ | Pokemon</title>
+	<title>SSJ | Pokemon | Sorted Data </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -118,11 +118,34 @@
     </header>
     
     <main class="middle">
-        We are the pokemon team SSJ - Shivansh, Shaurya, James
-        <br>
-        We are showcasing HTML, JavaScript, Java coding skills
+        <h1>Sorted Data using java sorted hashmap (TreeMap)</h1>
+        Raw data can be seen  <a href="https://pokeapi.co/api/v2/pokemon?limit=5000" target="_blank">here</a>
+        <table id="pokemon" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+        </tr>
+    </tfoot>
+    </table>
     </main>
-<script>    
+<script>
+    new DataTable('#pokemon', {
+        ajax: {
+            url: 'http://localhost:8080/api/poke/sorted'
+        },    
+        ordering: false,
+        columns: [
+            { data: 'name' },
+            { data: 'url' }
+        ] 
+    });
 </script>
 </body>
 </html>

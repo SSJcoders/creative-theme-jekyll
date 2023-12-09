@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>SSJ | Pokemon</title>
+	<title>SSJ | NFL Backed | Un-Sorted Data </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -94,7 +94,7 @@
                         <a class="page-scroll" href="/ssj/nfl.html">NFL</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="/ssj/nfl-backend-unsorted.html">NFL Backend</a>
+                        <a class="page-scroll" href="/ssj/nfl-backend.html">NFL Backend</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="/ssj/pokemon-unsorted.html">Pokemon Backend</a>
@@ -118,11 +118,83 @@
     </header>
     
     <main class="middle">
-        We are the pokemon team SSJ - Shivansh, Shaurya, James
-        <br>
-        We are showcasing HTML, JavaScript, Java coding skills
+        <h1>Un-Sorted NFL Standings Data</h1>
+        Raw data can be seen  <a href="http://localhost:8080/api/nflstandings/" target="_blank">here</a>
+        <table id="pokemon" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Tm</th>
+            <th>W</th>
+            <th>L</th>
+            <th>W-L%</th>
+			<th>PF</th>
+            <th>PA</th>
+            <th>PD</th>
+            <th>Mov</th>
+			<th>SoS</th>
+            <th>SRS</th>
+			<th>OSRS</th>
+            <th>DSRS</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Tm</th>
+            <th>W</th>
+            <th>L</th>
+            <th>W-L%</th>
+			<th>PF</th>
+            <th>PA</th>
+            <th>PD</th>
+            <th>Mov</th>
+			<th>SoS</th>
+            <th>SRS</th>
+			<th>OSRS</th>
+            <th>DSRS</th>
+        </tr>
+    </tfoot>
+    </table>
+    
+    <div>
+    <h2>Legend</h2>
+    <ul>
+		<li><strong>Tm</strong>: Team</li>
+		<li><strong>W</strong>: Wins</li>
+		<li><strong>L</strong>: Losses</li>
+		<li><strong>W-L%</strong>: Win-Loss Percentage (Percentage of games won by a team.)</li>
+		<li><strong>PF</strong>: Points For (Total points scored by the team.)</li>
+		<li><strong>PA</strong>: Points Against (Total points allowed by the team.)</li>
+		<li><strong>PD</strong>: Point Differential (Difference between points scored and points allowed.)</li>
+		<li><strong>MoV</strong>: Margin of Victory (Average difference in score in games won.)</li>
+		<li><strong>SoS</strong>: Strength of Schedule (Difficulty of a team’s past schedule; positive means harder.)</li>
+		<li><strong>SRS</strong>: Simple Rating System (Rating that considers point differential and strength of schedule.)</li>
+		<li><strong>OSRS</strong>: Offensive Simple Rating System (Measure of a team’s offensive quality.)</li>
+		<li><strong>DSRS</strong>: Defensive Simple Rating System (Measure of a team’s defensive quality.)</li>
+	</ul>
+    </div>
     </main>
-<script>    
+<script>
+//{"OSRS":"8.3","DSRS":"6.3","PA":"189","PD":"163","MoV":"13.6","SRS":"14.6","PF":"352","SoS":"1.0","W":"9","W-L%":".750","Tm":"San Francisco 49ers","L":"3"}
+    new DataTable('#pokemon', {
+        ajax: {
+            url: 'http://localhost:8080/api/nflstandings/'
+        },    
+        ordering: false,
+        columns: [
+        	{ data: 'Tm' },
+         	{ data: 'W' },
+        	{ data: 'L' },
+        	{ data: 'W-L%' },
+        	{ data: 'PF' },
+            { data: 'PA' },
+            { data: 'PD' },
+            { data: 'MoV' },
+            { data: 'SoS' },
+			{ data: 'SRS' },
+            { data: 'OSRS' },
+            { data: 'DSRS' }
+        ] 
+    });
 </script>
 </body>
 </html>
