@@ -94,15 +94,20 @@ input[type=range] {
     <h1>Sorting Algorithms</h1>
 
     <form name="flexForm">
-        <label><input type="radio" name="fDTypes" value="wrap" checked/>wrap</label>
-        <label><input type="radio" name="fDTypes" value="nowrap"/>nowrap</label>
-        <label><input type="radio" name="fDTypes" value="wrap-reverse"/>wrap-reverse</label>
+        <label><input type="radio" name="fDTypes" value="BubbleSort" checked/>Bubble Sort</label>
+        <label><input type="radio" name="fDTypes" value="MergeSort"/>Merge Sort</label>
+        <label><input type="radio" name="fDTypes" value="InsertionSort"/>Insertion Sort</label>
+        <label><input type="radio" name="fDTypes" value="SelectionSort"/>Selection Sort</label>
     </form>
 
     <br>
-    <input type="number"  placeholder="Enter Number!"> 
+    <div>
+        <input type="number" id="InputNumber" placeholder="Enter Number!"> 
+        <button onclick="setValue()">Set value</button>
+    </div>
+    
     <font size = 2 id = "slider_value_view">0</font> 
-    <input oninput = 'ShowSliderValue(this.value)' type="range" min="1000" max="10000" id="userInput" autofocus>
+    <input class="slider_range" oninput = 'ShowSliderValue(this.value)' type="range" min="1000" max="10000" id="userInput" autofocus>
 
     <br><br>
     <table class="type11">
@@ -122,7 +127,7 @@ input[type=range] {
         </tbody>
       </table>
     <br><br>
-    <button id="addButton" >Click for Sorting</button>
+    <button id="addButton" onclick="Sorting()">Click for Sorting</button>
     <br><br>
     <button id="graphButton" onclick="createGraph()" >Show Graph</button>
     <div id ="myDiv"></div>
@@ -133,7 +138,134 @@ input[type=range] {
 </body>
 </html>
 <script>
+async function Sorting() {
+    url = "http://localhost:8085/api/";
+    var num = document.getElementById("userInput").value;
+    var form = document.forms["flexForm"];
+    var sortingMethod;
+    for (var i = 0; i < form.fDTypes.length; i++) {
+        if (form.fDTypes[i].checked) {
+            sortingMethod = form.fDTypes[i].value;
+            break;
+        }
+    }
+    if (sortingMethod === "SelectionSort") {
+        const numData = {
+                "number": num
+        };
+
+        try {
+            const response = await fetch(url + "select/", {
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(numData)
+                });
+
+                if (response.ok) {
+                    
+                    document.getElementById("time").textContent = response;
+                    document.getElementById("NumValue").textContent = num;
+                    document.getElementById("method").textContent = sortingMethod;
+                    
+                } else {
+                    console.error("API request failed");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+    } else if (sortingMethod === "InsertionSort") {
+        const numData = {
+                "number": num
+        };
+
+        try {
+            const response = await fetch(url + "insert/", {
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(numData)
+                });
+
+                if (response.ok) {
+                    
+                    document.getElementById("time").textContent = response;
+                    document.getElementById("NumValue").textContent = num;
+                    document.getElementById("method").textContent = sortingMethod;
+                    
+                } else {
+                    console.error("API request failed");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+    } else if (sortingMethod === "BubbleSort") {
+        const numData = {
+                "number": num
+        };
+
+        try {
+            const response = await fetch(url + "bubble/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(numData)
+            });
+
+            if (response.ok) {
+                document.getElementById("time").textContent = response;
+                document.getElementById("NumValue").textContent = num;
+                document.getElementById("method").textContent = sortingMethod;
+            } else {
+                console.error("API request failed");
+            }
+        } catch (error) {
+                console.error("Error:", error);
+        }
+    } else {
+        const numData = {
+                "number": num
+        };
+
+        try {
+            const response = await fetch(url + "merge/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(numData)
+            });
+
+            if (response.ok) {
+                    
+                document.getElementById("time").textContent = response;
+                document.getElementById("NumValue").textContent = num;
+                document.getElementById("method").textContent = sortingMethod;
+                
+            } else {
+                console.error("API request failed");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    console.log("Selected Sorting Method: " + sortingMethod);
+
+}
+function setValue() {
+    var a = document.getElementById("InputNumber");
+    document.getElementById("userInput").value = a.value;
+    ShowSliderValue(a.value);
+}
 function createGraph() {
+    fetch("http://localhost:8085/api/select/get")
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("time").textContent = data;
+                    });
     var trace1 = {
         x: [1, 2, 3, 4, 5],
         y: [1, 6, 3, 6, 1],
@@ -158,12 +290,12 @@ function createGraph() {
 
     var layout = {
         xaxis: {
-            range: [ 0.75, 5.25 ]
+            range: [ 100, 10100 ]
         },
         yaxis: {
-            range: [0, 8]
+            range: [0, 100]
         },
-        title:'Data Labels Hover'
+        title:'Sorting Analysis'
     };
 
     Plotly.newPlot('myDiv', data, layout);
@@ -173,13 +305,6 @@ function ShowSliderValue(sVal)
  var obValueView = document.getElementById("slider_value_view");
  obValueView.innerHTML = sVal
 }
-var RangeSlider = function(){
- var range = $('.slider_range');
- range.on('input', function(){ 
- ShowSliderValue(this.value);
- });
-};
 
-RangeSlider();
 
 </script>
