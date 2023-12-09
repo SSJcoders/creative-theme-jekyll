@@ -157,31 +157,89 @@
         function delay(time) {
             return new Promise(resolve => setTimeout(resolve, time));
         }
-        async function mergeSort() {
-            if (parseInt(inputBox.value) % 4 === 1) {
-                for(let i = 0; i<= parseInt(inputBox.value/4); i++) {
-                    for (let t = 1; t<= 2; t++) {
-                        document.getElementById("merge" + (2*i+t)).style.backgroundColor = "red";
-                    }
-                    // back part
-                }
-                for (let k = 0; k < parseInt(inputBox.value/4); k++) {
+        // async function mergeSort() {
+        //     if (parseInt(inputBox.value) % 4 === 1) {
+        //         for(let i = 0; i<= parseInt(inputBox.value/4); i++) {
+        //             for (let t = 1; t<= 2; t++) {
+        //                 document.getElementById("merge" + (2*i+t)).style.backgroundColor = "red";
+        //             }
+        //             // back part
+        //         }
+        //         for (let k = 0; k < parseInt(inputBox.value/4); k++) {
                     
-                    for (let t = 1; t<= 2; t++) {
-                        document.getElementById("merge" + (parseInt(inputBox.value/2) + 2*k + t + 1)).style.backgroundColor = "red";
-                    }
-                }
-            }
-            else {
-                for(let i = 0; i< inputBox.value/4; i++) {
-                    for (let t = 1; t<= 2; t++) {
-                        document.getElementById("merge" + (2*i+t)).style.backgroundColor = "red";
-                    }
-                }
-            }
+        //             for (let t = 1; t<= 2; t++) {
+        //                 document.getElementById("merge" + (parseInt(inputBox.value/2) + 2*k + t + 1)).style.backgroundColor = "red";
+        //             }
+        //         }
+        //     }
+        //     else {
+        //         for(let i = 0; i< inputBox.value/4; i++) {
+        //             for (let t = 1; t<= 2; t++) {
+        //                 document.getElementById("merge" + (2*i+t)).style.backgroundColor = "red";
+        //             }
+        //         }
+        //     }
             
+        // }
+        async function mergeSort() {
+    await mergeSortHelper(1, inputBox.value);
+}
+
+async function mergeSortHelper(start, end) {
+    if (start < end) {
+        const middle = Math.floor((start + end) / 2);
+        await merge(start, middle, end);
+    }
+}
+
+async function merge(start, middle, end) {
+    const leftArray = ans.slice(start - 1, middle);
+    const rightArray = ans.slice(middle, end);
+
+    let i = 0,
+        j = 0,
+        k = start - 1;
+
+    while (i < leftArray.length && j < rightArray.length) {
+        document.getElementById("merge" + (start + i)).style.backgroundColor = "red";
+        document.getElementById("merge" + (middle + 1 + j)).style.backgroundColor = "red";
+        await delay(300);
+
+        if (leftArray[i] <= rightArray[j]) {
+            ans[k] = leftArray[i];
+            i++;
+        } else {
+            ans[k] = rightArray[j];
+            j++;
         }
 
+        document.getElementById("merge" + (start + i - 1)).style.backgroundColor = "dimgrey";
+        document.getElementById("merge" + (middle + 1 + j - 1)).style.backgroundColor = "dimgrey";
+
+        updateMergeBox();
+        k++;
+    }
+
+    while (i < leftArray.length) {
+        ans[k] = leftArray[i];
+        document.getElementById("merge" + (start + i)).style.backgroundColor = "red";
+        await delay(300);
+        document.getElementById("merge" + (start + i)).style.backgroundColor = "dimgrey";
+        updateMergeBox();
+        i++;
+        k++;
+    }
+
+    while (j < rightArray.length) {
+        ans[k] = rightArray[j];
+        document.getElementById("merge" + (middle + 1 + j)).style.backgroundColor = "red";
+        await delay(300);
+        document.getElementById("merge" + (middle + 1 + j)).style.backgroundColor = "dimgrey";
+        updateMergeBox();
+        j++;
+        k++;
+    }
+}
         async function bubbleSort() {
             for (var i = 0; i < inputBox.value - 1; i++) {
                 for (var j = 0; j < inputBox.value - i - 1; j++) {

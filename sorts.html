@@ -1,0 +1,185 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+  <meta name="viewport" content="width=device-width">
+  <title>sort</title>
+</head>
+<style>
+  table.type11 {
+  border-collapse: separate;
+  border-spacing: 1px;
+  text-align: center;
+  line-height: 1.5;
+  margin: 20px 10px;
+}
+table.type11 th {
+  width: 155px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  color: #fff;
+  background: #ce4869 ;
+}
+table.type11 td {
+  width: 155px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+  background: #eee;
+}
+.navbar {
+  display: flex;
+  background-color: #333;
+}
+
+/* Style the navigation bar links */
+.navbar a {
+  color: white;
+  padding: 14px 20px;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* Change color on hover */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Column container */
+.row {  
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Create two unequal columns that sits next to each other */
+/* Sidebar/left column */
+.side {
+  flex: 30%;
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+/* Main column */
+.main {
+  flex: 70%;
+  background-color: white;
+  padding: 20px;
+}
+
+/* Fake image, just for this example */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+input[type=range] {
+	width:100%;
+	-webkit-appearance: none;
+	background: blue;
+}
+</style>
+<body>
+  <div class="content">
+    <h1>Sorting Algorithms</h1>
+
+    <form name="flexForm">
+        <label><input type="radio" name="fDTypes" value="wrap" checked/>wrap</label>
+        <label><input type="radio" name="fDTypes" value="nowrap"/>nowrap</label>
+        <label><input type="radio" name="fDTypes" value="wrap-reverse"/>wrap-reverse</label>
+    </form>
+
+    <br>
+    <input type="number"  placeholder="Enter Number!"> 
+    <font size = 2 id = "slider_value_view">0</font> 
+    <input oninput = 'ShowSliderValue(this.value)' type="range" min="1000" max="10000" id="userInput" autofocus>
+
+    <br><br>
+    <table class="type11">
+        <thead>
+        <tr>
+          <th scope="cols">Sorting Method</th>
+          <th scope="cols">Number</th>
+          <th scope="cols">Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td id = "method"></th>
+          <td id = "NumValue"></th>
+          <td id = "time"></th>
+        </tr>
+        </tbody>
+      </table>
+    <br><br>
+    <button id="addButton" >Click for Sorting</button>
+    <br><br>
+    <button id="graphButton" onclick="createGraph()" >Show Graph</button>
+    <div id ="myDiv"></div>
+
+
+    
+  </div>
+</body>
+</html>
+<script>
+function createGraph() {
+    var trace1 = {
+        x: [1, 2, 3, 4, 5],
+        y: [1, 6, 3, 6, 1],
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Team A',
+        text: ['A-1', 'A-2', 'A-3', 'A-4', 'A-5'],
+        marker: { size: 12 }
+    };
+
+    var trace2 = {
+        x: [1.5, 2.5, 3.5, 4.5, 5.5],
+        y: [4, 1, 7, 1, 4],
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Team B',
+        text: ['B-a', 'B-b', 'B-c', 'B-d', 'B-e'],
+        marker: { size: 12 }
+    };
+
+    var data = [ trace1, trace2 ];
+
+    var layout = {
+        xaxis: {
+            range: [ 0.75, 5.25 ]
+        },
+        yaxis: {
+            range: [0, 8]
+        },
+        title:'Data Labels Hover'
+    };
+
+    Plotly.newPlot('myDiv', data, layout);
+}
+function ShowSliderValue(sVal)
+{
+ var obValueView = document.getElementById("slider_value_view");
+ obValueView.innerHTML = sVal
+}
+var RangeSlider = function(){
+ var range = $('.slider_range');
+ range.on('input', function(){ 
+ ShowSliderValue(this.value);
+ });
+};
+
+RangeSlider();
+
+</script>

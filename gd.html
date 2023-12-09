@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fibonacci Shell Visualization</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <label for="fibonacciNumber">Enter a number:</label>
+  <input type="number" id="fibonacciNumber" min="0" step="1" value="0">
+  <button onclick="drawFibonacci()">Draw Fibonacci Shell</button>
+
+  <canvas id="fibonacciCanvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('fibonacciCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawFibonacci() {
+      const n = parseInt(document.getElementById('fibonacciNumber').value);
+      const fibonacciSequence = [0, 1];
+
+      for (let i = 2; i <= n; i++) {
+        const a = fibonacciSequence[i - 1];
+        const b = fibonacciSequence[i - 2];
+        fibonacciSequence.push(a + b);
+      }
+
+      return fibonacciSequence;
+     
+    }
+
+    function continiusFib(a) {
+    var b = drawFibonacci(),
+    c = Math.floor(a),
+    d = Math.ceil(a);
+    if (d >= b.length)
+        return null;
+    a = Math.pow(a - c, 1.15);
+    return b[c] + (b[d] - b[c]) * a
+}
+
+function drawSpiral(pointA, pointB) {
+    var b = pointA;
+    var c = pointB;
+    ctx.translate(b.x, b.y);
+    b = Math.sqrt(((c.x - b.x) * (c.x - b.x)) + ((c.y - b.y) * (c.y - b.y)));
+    d = 1 / Math.sqrt(((c.x - b.x) * (c.x - b.x)) + ((c.y - b.y) * (c.y - b.y)));
+    c = Math.acos(c.x - b.x);
+    0 > Math.asin(c.y - b.y) && (c = 2 * Math.PI - c);
+    ctx.rotate(c);
+    ctx.scale(b / 5, b / 5);
+    var d = Math.PI / 100;
+    ctx.moveTo(0, 0);
+    for (var e = 0; e < 50 * (fibNumbers().length - 1) ; e++) {
+        var f = e * d, g = continiusFib(e / 50),
+        h = Math.cos(f) * g,
+        f = Math.sin(f) * g;
+        ctx.lineTo(h, f);
+    }
+    ctx.scale(5 / b, 5 / b);
+    ctx.rotate(-c);
+    //ctx.stroke();
+}
+  </script>
+</body>
+</html>
