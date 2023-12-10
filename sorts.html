@@ -106,8 +106,8 @@ input[type=range] {
         <button onclick="setValue()">Set value</button>
     </div>
     
-    <font size = 2 id = "slider_value_view">0</font> 
-    <input class="slider_range" oninput = 'ShowSliderValue(this.value)' type="range" min="1000" max="10000" id="userInput" autofocus>
+    <font size = 2 id = "slider_value_view">10000</font> 
+    <input class="slider_range" oninput = 'ShowSliderValue(this.value)' value="10000" type="range" min="10000" max="100000" id="userInput" autofocus>
 
     <br><br>
     <table class="type11">
@@ -157,7 +157,7 @@ async function Sorting() {
         try {
             const response = await fetch(url + "select/", {
                 method: "POST",
-                mode: 'no-cors',
+                cache: 'no-cache',
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -165,8 +165,8 @@ async function Sorting() {
                 });
 
                 if (response.ok) {
-                    
-                    document.getElementById("time").textContent = response;
+                    const responseData = await response.json();
+                    document.getElementById("time").textContent = responseData;
                     document.getElementById("NumValue").textContent = num;
                     document.getElementById("method").textContent = sortingMethod;
                     
@@ -184,7 +184,7 @@ async function Sorting() {
         try {
             const response = await fetch(url + "insert/", {
                 method: "POST",
-                mode: 'no-cors',
+                cache: 'no-cache',
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -192,8 +192,8 @@ async function Sorting() {
                 });
 
                 if (response.ok) {
-                    
-                    document.getElementById("time").textContent = response;
+                    const responseData = await response.json();
+                    document.getElementById("time").textContent = responseData;
                     document.getElementById("NumValue").textContent = num;
                     document.getElementById("method").textContent = sortingMethod;
                     
@@ -210,15 +210,17 @@ async function Sorting() {
 
         try {
             const response = await fetch(url + "bubble/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+                method: 'POST',
+                cache: 'no-cache',
+                 headers: {
+                "Content-Type": "application/json"
                 },
                 body: JSON.stringify(numData)
             });
 
             if (response.ok) {
-                document.getElementById("time").textContent = response;
+                const responseData = await response.json();
+                document.getElementById("time").textContent = responseData ;
                 document.getElementById("NumValue").textContent = num;
                 document.getElementById("method").textContent = sortingMethod;
             } else {
@@ -227,7 +229,7 @@ async function Sorting() {
         } catch (error) {
                 console.error("Error:", error);
         }
-    } else {
+    } else if (sortingMethod === "MergeSort"){
         const numData = {
                 "number": num
         };
@@ -235,7 +237,6 @@ async function Sorting() {
         try {
             const response = await fetch(url + "merge/", {
                 method: "POST",
-                mode: 'no-cors',
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -243,8 +244,8 @@ async function Sorting() {
             });
 
             if (response.ok) {
-                    
-                document.getElementById("time").textContent = response;
+                const responseData = await response.json();
+                document.getElementById("time").textContent = responseData;
                 document.getElementById("NumValue").textContent = num;
                 document.getElementById("method").textContent = sortingMethod;
                 
@@ -264,44 +265,112 @@ function setValue() {
     ShowSliderValue(a.value);
 }
 function createGraph() {
+    var selectTempX = [];
+var selectTempY = [];
+var mergeTempX = [];
+var mergeTempY = [];
+var bubbleTempX = [];
+var bubbleTempY = [];
+var insertTempX = [];
+var insertTempY = [];
+
+var trace1, trace2, trace3, trace4;
+
+// Create an array of promises for all fetch calls
+var promises = [
     fetch("http://localhost:8085/api/select/get")
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById("time").textContent = data;
-                    });
-    var trace1 = {
-        x: [1, 2, 3, 4, 5],
-        y: [1, 6, 3, 6, 1],
-        mode: 'markers',
-        type: 'scatter',
-        name: 'Team A',
-        text: ['A-1', 'A-2', 'A-3', 'A-4', 'A-5'],
-        marker: { size: 12 }
-    };
+        .then(response => response.json())
+        .then(data => {
+            selectTempX = data.map(Datas => Datas.number / 100);
+            selectTempY = data.map(Datas => Datas.time);
+            trace1 = {
+                x: selectTempX,
+                y: selectTempY,
+                mode: 'markers',
+                type: 'scatter',
+                name: 'Selection Sort',
+                marker: { size: 12 }
+            };
+        }),
 
-    var trace2 = {
-        x: [1.5, 2.5, 3.5, 4.5, 5.5],
-        y: [4, 1, 7, 1, 4],
-        mode: 'markers',
-        type: 'scatter',
-        name: 'Team B',
-        text: ['B-a', 'B-b', 'B-c', 'B-d', 'B-e'],
-        marker: { size: 12 }
-    };
+    fetch("http://localhost:8085/api/merge/get")
+        .then(response => response.json())
+        .then(data => {
+            mergeTempX = data.map(Datas => Datas.number / 100);
+            mergeTempY = data.map(Datas => Datas.time);
+            trace2 = {
+                x: mergeTempX,
+                y: mergeTempY,
+                mode: 'markers',
+                type: 'scatter',
+                name: 'Merge Sort',
+                marker: { size: 12 }
+            };
+        }),
 
-    var data = [ trace1, trace2 ];
+    fetch("http://localhost:8085/api/bubble/get")
+        .then(response => response.json())
+        .then(data => {
+            bubbleTempX = data.map(Datas => Datas.number / 100);
+            bubbleTempY = data.map(Datas => Datas.time);
+            trace3 = {
+                x: bubbleTempX,
+                y: bubbleTempY,
+                mode: 'markers',
+                type: 'scatter',
+                name: 'Bubble Sort',
+                marker: { size: 12 }
+            };
+        }),
 
-    var layout = {
-        xaxis: {
-            range: [ 100, 10100 ]
-        },
-        yaxis: {
-            range: [0, 100]
-        },
-        title:'Sorting Analysis'
-    };
+    fetch("http://localhost:8085/api/insert/get")
+        .then(response => response.json())
+        .then(data => {
+            insertTempX = data.map(Datas => Datas.number / 100);
+            insertTempY = data.map(Datas => Datas.time);
+            trace4 = {
+                x: insertTempX,
+                y: insertTempY,
+                mode: 'markers',
+                type: 'scatter',
+                name: 'Insertion Sort',
+                marker: { size: 12 }
+            };
+        })
+];
 
-    Plotly.newPlot('myDiv', data, layout);
+// Wait for all promises to resolve
+Promise.all(promises)
+    .then(() => {
+        // Now you can use trace1, trace2, trace3, and trace4 here
+        var data = [trace1, trace2, trace3, trace4];
+
+        var layout = {
+            xaxis: {
+                range: [90, 1001]
+            },
+            yaxis: {
+                range: [0, 10000]
+            },
+            legend: {
+                y: 0.5,
+                yref: 'paper',
+                font: {
+                    family: 'Arial, sans-serif',
+                    size: 20,
+                    color: 'grey',
+                }
+            },
+            title: 'Data Labels on the Plot'
+        };
+
+        // Finally, create the plot
+        Plotly.newPlot('myDiv', data, layout);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+
 }
 function ShowSliderValue(sVal)
 {

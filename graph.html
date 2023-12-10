@@ -1,0 +1,69 @@
+<head>
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+</head>
+
+<body>
+    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+</body>
+
+<script>
+    var a = [];
+    fetch("http://localhost:8085/api/select/get")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(Datas => {
+                a.push(parseInt(Datas.number) / 100);
+                console.log(typeof (parseInt(Datas.number) / 100))
+            });
+
+            var trace1 = {
+                x: a,
+                y: [1402.34121, 7236.706656],
+                mode: 'markers+text',
+                type: 'scatter',
+                name: 'Team A',
+                textposition: 'top center',
+                textfont: {
+                    family: 'Raleway, sans-serif'
+                },
+                marker: { size: 12 }
+            };
+
+            var trace2 = {
+                x: [125, 250],
+                y: [462.7341, 1300.687969],
+                mode: 'markers+text',
+                type: 'scatter',
+                name: 'Team B',
+                textfont: {
+                    family: 'Times New Roman'
+                },
+                textposition: 'bottom center',
+                marker: { size: 12 }
+            };
+
+            var data = [trace1, trace2];
+
+            var layout = {
+                xaxis: {
+                    range: [90, 1001]
+                },
+                yaxis: {
+                    range: [0, 10000]
+                },
+                legend: {
+                    y: 0.5,
+                    yref: 'paper',
+                    font: {
+                        family: 'Arial, sans-serif',
+                        size: 20,
+                        color: 'grey',
+                    }
+                },
+                title: 'Data Labels on the Plot'
+            };
+            console.log(a);
+            Plotly.newPlot('myDiv', data, layout);
+        });
+</script>
