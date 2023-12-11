@@ -42,16 +42,16 @@
             pokemonListElement.innerHTML = '';
 
             // Render the sorted list
-            pokemonList.forEach(async pokemon => {
+            for (const pokemon of pokemonList) {
                 const details = await fetchPokemonDetails(pokemon.url);
                 const listItem = document.createElement('li');
                 listItem.className = 'pokemonItem';
                 listItem.innerHTML = `
-                    <strong>${pokemon.name}</strong> (ID: ${details.id})<br>
-                    Type: ${details.types.map(type => type.type.name).join(', ')}
+                    <strong>${details.name}</strong> (ID: ${details.id})<br>
+                    Type(s): ${details.types.map(type => type.type.name).join(', ')}
                 `;
                 pokemonListElement.appendChild(listItem);
-            });
+            }
         }
 
         // Your existing sortPokemon function remains unchanged
