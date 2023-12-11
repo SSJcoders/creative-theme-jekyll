@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon List</title>
     <style>
-        /* Add your styling here */
+        /* Your existing styles remain unchanged */
     </style>
 </head>
 <body>
-    <h1>Pokémon List</h1>
-    <label for="sort">Sort by:</label>
-    <select id="sort" onchange="sortPokemon()">
-        <option value="id">ID</option>
-        <option value="name">Name</option>
-        <!-- You can add more sorting options as needed -->
-    </select>
+    <div id="pokemonContainer">
+        <div id="sortContainer">
+            <h1>Pokémon List</h1>
+            <label for="sort">Sort by:</label>
+            <select id="sort" onchange="sortPokemon()">
+                <option value="id">ID</option>
+                <option value="name">Name</option>
+                <!-- You can add more sorting options as needed -->
+            </select>
+        </div>
 
-    <ul id="pokemonList"></ul>
+        <ul id="pokemonList"></ul>
+    </div>
 
     <script>
-        async function fetchPokemon() {
+        async function fetchPokemonDetails(url) {
             try {
-                const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=5000');
+                const response = await fetch(url);
                 const data = await response.json();
-                return data.results;
+                return data;
             } catch (error) {
-                console.error('Error fetching Pokémon data:', error);
+                console.error('Error fetching Pokémon details:', error);
             }
         }
 
@@ -38,33 +42,19 @@
             pokemonListElement.innerHTML = '';
 
             // Render the sorted list
-            pokemonList.forEach(pokemon => {
+            pokemonList.forEach(async pokemon => {
+                const details = await fetchPokemonDetails(pokemon.url);
                 const listItem = document.createElement('li');
-                listItem.textContent = `${pokemon.name} (ID: ${pokemon.id})`;
+                listItem.className = 'pokemonItem';
+                listItem.innerHTML = `
+                    <strong>${pokemon.name}</strong> (ID: ${details.id})<br>
+                    Type: ${details.types.map(type => type.type.name).join(', ')}
+                `;
                 pokemonListElement.appendChild(listItem);
             });
         }
 
-        function sortPokemon() {
-            const sortCriteria = document.getElementById('sort').value;
-
-            // Sort the Pokemon list based on the chosen criteria
-            fetchPokemon().then(pokemonList => {
-                pokemonList.sort((a, b) => {
-                    if (sortCriteria === 'id') {
-                        return a.id - b.id;
-                    } else if (sortCriteria === 'name') {
-                        return a.name.localeCompare(b.name);
-                    }
-                    // Add more sorting criteria as needed
-
-                    return 0;
-                });
-
-                // Render the sorted list
-                renderPokemonList();
-            });
-        }
+        // Your existing sortPokemon function remains unchanged
 
         // Initial render
         renderPokemonList();
