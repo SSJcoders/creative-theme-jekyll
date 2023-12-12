@@ -1,19 +1,15 @@
-/* 
-   Make sure the pokeball class is defined in this file.
-   Add your styling for the pokeball class below.
-*/
-
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
+    background: linear-gradient(180deg, #6cb5f7, #98a0f5);
     margin: 0;
     padding: 0;
+    color: #fff;
   }
   
   .container {
     max-width: 800px;
     margin: 50px auto;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
@@ -30,6 +26,7 @@ body {
   label {
     display: block;
     margin-bottom: 5px;
+    color: #333;
   }
   
   input,
@@ -46,6 +43,7 @@ body {
     border: none;
     padding: 15px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
   button:hover {
@@ -69,5 +67,11 @@ body {
     color: #fff;
     font-weight: bold;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  #generationTime {
+    text-align: center;
+    margin-top: 10px;
+    color: #333;
   }
   
