@@ -93,7 +93,7 @@
                         <a class="page-scroll" href="/ssj/nfl.html">NFL</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="/ssj/pokemon.html">Pokemon Backend</a>
+                        <a class="page-scroll" href="/ssj/pokemon-unsorted.html">Pokemon Backend</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="/ssj/fibonacci.html">Fibonacci</a>
@@ -114,33 +114,11 @@
     </header>
     
     <main class="middle">
-        <h>Un Sorted Data</h>
-        <table id="pokemon" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>URL</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>URL</th>
-        </tr>
-    </tfoot>
-    </table>
+        We are the pokemon team SSJ - Shivansh, Shaurya, James
+        <br>
+        We are showcasing HTML, JavaScript, Java coding skills
     </main>
-<script>
-    new DataTable('#pokemon', {
-        ajax: {
-            url: 'http://localhost:8080/api/poke'
-        },    
-        ordering: false,
-        columns: [
-            { data: 'name' },
-            { data: 'url' }
-        ] 
-    });
+<script>    
 </script>
 </body>
 </html>
