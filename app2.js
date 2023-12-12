@@ -10,6 +10,8 @@ function generatePokeballs() {
     const methodSelect = document.getElementById('methodSelect');
     const method = methodSelect.value;
   
+    const startTime = performance.now(); // Start measuring time
+  
     let result;
   
     switch (method) {
@@ -26,10 +28,13 @@ function generatePokeballs() {
         result = 0;
     }
   
-    displayPokeballs(result);
+    const endTime = performance.now(); // Stop measuring time
+    const generationTime = endTime - startTime;
+  
+    displayPokeballs(result, generationTime);
   }
   
-  function displayPokeballs(count) {
+  function displayPokeballs(count, generationTime) {
     const pokeballContainer = document.getElementById('pokeballContainer');
     pokeballContainer.innerHTML = '';
   
@@ -37,6 +42,10 @@ function generatePokeballs() {
       const pokeball = createPokeball(i + 1);
       pokeballContainer.appendChild(pokeball);
     }
+  
+    // Display the generation time
+    const generationTimeElement = document.getElementById('generationTime');
+    generationTimeElement.innerText = `Generation Time: ${generationTime.toFixed(2)} ms`;
   }
   
   function createPokeball(number) {
