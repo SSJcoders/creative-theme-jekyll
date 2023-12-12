@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Pokeball Art</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+        canvas {
+            border: 1px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .info-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .info-container h2 {
+            color: #333;
+        }
+        .info-container p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fibCanvas" width="800" height="600"></canvas>
+
+    <div class="info-container">
+        <h2 id="fibMethod">Fibonacci Method Used: </h2>
+        <p id="number">Number: </p>
+        <p id="generationTime">Generation Time: </p>
+    </div>
+
+    <script>
+        // fibonacci-art.js
+const canvas = document.getElementById('fibCanvas');
+const ctx = canvas.getContext('2d');
+
+// Additional constant for Pokeball radius
+const pokeballRadius = 5;
+
+function fibonacciBinet(n) {
+    const phi = (1 + Math.sqrt(5)) / 2;
+    const sqrt5 = Math.sqrt(5);
+    const fibN = Math.round((Math.pow(phi, n) - Math.pow(1 - phi, n)) / sqrt5);
+    return fibN;
+}
+
+function drawPokeball(x, y, size) {
+    // Draw the top half of the Pokeball
+    ctx.beginPath();
+    ctx.arc(x, y, size * 3.2, 0, Math.PI);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
+    // Draw the bottom half of the Pokeball
+    ctx.beginPath();
+    ctx.arc(x, y, size * 3.2, Math.PI, 0);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Draw the black horizontal band
+    ctx.beginPath();
+    ctx.arc(x, y, size * 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+
+    // Draw the white button in the center
+    ctx.beginPath();
+    ctx.arc(x, y, pokeballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+}
+
+function displayFibMethod(method) {
+    const fibMethodElement = document.getElementById('fibMethod');
+    fibMethodElement.textContent = `Fibonacci Method Used: ${method}`;
+    const numElement = document.getElementById('number');
+    numElement.textContent = `Number: 20`;
+}
+
+function generateRecursiveArtWithBinet(maxIterations) {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 1;
+    recursiveDrawWithBinet(centerX, centerY - 350, 0.5, maxIterations, 0);
+}
+
+function recursiveDrawWithBinet(x, y, size, remainingIterations, angle) {
+    if (remainingIterations > 0) {
+        ctx.beginPath();
+        ctx.arc(x, y, size * 3.2, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        ctx.fill();
+
+        const newSize = fibonacciBinet(remainingIterations);
+        const nextX = x + size * 0.05 * Math.cos(angle);
+        const nextY = y + size * 0.05 * Math.sin(angle);
+        drawPokeball(nextX, nextY, newSize * 0.3);
+
+        const newAngle = angle + Math.PI / 3;
+        recursiveDrawWithBinet(nextX, nextY, newSize * 0.3, remainingIterations - 1, newAngle);
+    }
+}
+
+function power(matrix, n) {
+    let result = [[1, 0], [0, 1]];
+    while (n > 0) {
+        if (n % 2 === 1) {
+            result = multiplyMatrices(result, matrix);
+        }
+        matrix = multiplyMatrices(matrix, matrix);
+        n = Math.floor(n / 2);
+    }
+    return result;
+}
+
+function multiplyMatrices(matrix1, matrix2) {
+    let result = [];
+    for (let i = 0; i < matrix1.length; i++) {
+        result[i] = [];
+        for (let j = 0; j < matrix2[0].length; j++) {
+            let sum = 0;
+            for (let k = 0; k < matrix1[0].length; k++) {
+                sum += matrix1[i][k] * matrix2[k][j];
+            }
+            result[i][j] = sum;
+        }
+    }
+    return result;
+}
+
+function fibonacciMatrix(n) {
+    const baseMatrix = [[1, 1], [1, 0]];
+    if (n === 0) return 0;
+    const result = power(baseMatrix, n - 1);
+    return result[0][0];
+}
+
+function generateMatrixArt() {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    let angle = 0;
+    const scale = 12;
+
+    for (let i = 0; i < 20; i++) {
+        const fibNumber = fibonacciMatrix(i);
+        const radius = fibNumber * scale;
+        const x = centerX + radius * 0.5 * Math.cos(angle);
+        const y = centerY + radius * 0.5 * Math.sin(angle);
+        drawPokeball(x, y, fibNumber);
+        angle += Math.PI / 2;
+    }
+}
+
+function displayGenerationTime(time) {
+    const generationTimeElement = document.getElementById('generationTime');
+    generationTimeElement.textContent = `Generation Time: ${time.toFixed(2)} milliseconds`;
+}
+
+function generateArt() {
+    const startTime = performance.now();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const method = Math.random();
+
+    let generationTime;
+    if (method < 0.25) {
+        displayFibMethod('recursive');
+        generateRecursiveArtWithBinet(20);
+    } else if (method < 0.5) {
+        displayFibMethod('Binet formula');
+        generateRecursiveArtWithBinet(20);
+    } else if (method < 0.75) {
+        displayFibMethod('iterative');
+        // Add your iterative method here if needed
+        generationTime = performance.now() - startTime;
+    } else {
+        displayFibMethod('matrix');
+        generateMatrixArt();
+        generationTime = performance.now() - startTime;
+    }
+
+    if (!generationTime) {
+        generationTime = performance.now() - startTime;
+    }
+
+    displayGenerationTime(generationTime);
+}
+
+// Call the generateArt function as before to generate and display the Pokeballs
+generateArt();
+
+        generateArt();
+    </script>
+</body>
+</html>
