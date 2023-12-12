@@ -29,6 +29,30 @@
         .info-container p {
             color: #666;
         }
+        .controls-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .controls-container label {
+            margin-right: 5px;
+        }
+        .controls-container select,
+        .controls-container input,
+        .controls-container button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .controls-container select,
+        .controls-container input {
+            width: 100px;
+        }
+        .controls-container button {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -40,12 +64,22 @@
         <p id="generationTime">Generation Time: </p>
     </div>
 
+    <div class="controls-container">
+        <label for="method">Choose sorting method:</label>
+        <select id="method">
+            <option value="recursive">Recursive</option>
+            <option value="binet">Binet</option>
+            <option value="iterative">Iterative</option>
+            <option value="matrix">Matrix</option>
+        </select>
+        <label for="n">Enter the value of 'n':</label>
+        <input type="number" id="n" value="10" min="1">
+        <button onclick="generateArt()">Generate</button>
+    </div>
+
     <script>
-        // fibonacci-art.js
         const canvas = document.getElementById('fibCanvas');
         const ctx = canvas.getContext('2d');
-
-        // Additional constant for Pokeball radius
         const pokeballRadius = 5;
 
         function fibonacciBinet(n) {
@@ -56,25 +90,21 @@
         }
 
         function drawPokeball(x, y, size) {
-            // Draw the top half of the Pokeball
             ctx.beginPath();
             ctx.arc(x, y, size * 3.2, 0, Math.PI);
             ctx.fillStyle = 'white';
             ctx.fill();
 
-            // Draw the bottom half of the Pokeball
             ctx.beginPath();
             ctx.arc(x, y, size * 3.2, Math.PI, 0);
             ctx.fillStyle = 'red';
             ctx.fill();
 
-            // Draw the black horizontal band
             ctx.beginPath();
             ctx.arc(x, y, size * 3.2, 0, Math.PI * 2);
             ctx.fillStyle = 'black';
             ctx.fill();
 
-            // Draw the white button in the center
             ctx.beginPath();
             ctx.arc(x, y, pokeballRadius, 0, Math.PI * 2);
             ctx.fillStyle = 'white';
@@ -85,7 +115,7 @@
             const fibMethodElement = document.getElementById('fibMethod');
             fibMethodElement.textContent = `Fibonacci Method Used: ${method}`;
             const numElement = document.getElementById('number');
-            numElement.textContent = `Number: 20`;
+            numElement.textContent = `Number: ${document.getElementById('n').value}`;
         }
 
         function generateRecursiveArtWithBinet(maxIterations) {
@@ -151,7 +181,7 @@
             let angle = 0;
             const scale = 12;
 
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < document.getElementById('n').value; i++) {
                 const fibNumber = fibonacciMatrix(i);
                 const radius = fibNumber * scale;
                 const x = centerX + radius * 0.5 * Math.cos(angle);
@@ -167,35 +197,34 @@
         }
 
         function generateArt() {
+            const method = document.getElementById('method').value;
+            const n = document.getElementById('n').value;
             const startTime = performance.now();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const method = Math.random();
 
-            let generationTime;
-            if (method < 0.25) {
-                displayFibMethod('recursive');
-                generateRecursiveArtWithBinet(20);
-            } else if (method < 0.5) {
-                displayFibMethod('Binet formula');
-                generateRecursiveArtWithBinet(20);
-            } else if (method < 0.75) {
-                displayFibMethod('iterative');
-                // Add your iterative method here if needed
-                generationTime = performance.now() - startTime;
-            } else {
-                displayFibMethod('matrix');
-                generateMatrixArt();
-                generationTime = performance.now() - startTime;
+            displayFibMethod(method);
+
+            switch (method) {
+                case 'recursive':
+                    generateRecursiveArtWithBinet(n);
+                    break;
+                case 'binet':
+                    generateRecursiveArtWithBinet(n);
+                    break;
+                case 'iterative':
+                    // Add your iterative method here if needed
+                    break;
+                case 'matrix':
+                    generateMatrixArt();
+                    break;
+                default:
+                    break;
             }
 
-            if (!generationTime) {
-                generationTime = performance.now() - startTime;
-            }
-
+            const generationTime = performance.now() - startTime;
             displayGenerationTime(generationTime);
         }
 
-        // Call the generateArt function as before to generate and display the Pokeballs
+        // Call the generateArt function to initialize the drawing
         generateArt();
     </script>
 </body>
