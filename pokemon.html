@@ -9,15 +9,7 @@
     <script>var define = null;</script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <!-- Script is used to embed executable code -->
-<script>
-    new DataTable('#pokemon', {
-    ajax: 'http://localhost:8080/api/poke/alphabet',
-    columns: [
-        { data: 'name' },
-        { data: 'url' }
-    ]
-});
-</script>
+
 </head>
 
 <!-- Body contains the contents of the Doc -->
@@ -37,6 +29,14 @@
     </tfoot>
 </table>
 
-
+<script>
+    new DataTable('#pokemon', {
+    ajax: 'http://localhost:8080/api/poke/alphabet',
+    columns: [
+        { data: 'name' },
+        { data: 'url' }
+    ]
+});
+</script>
 </body>
 </html>
