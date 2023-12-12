@@ -1,0 +1,42 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head contains information to Support the Doc -->
+<head>
+    <!-- load jQuery and DataTables output style and scripts -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>var define = null;</script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- Script is used to embed executable code -->
+<script>
+    new DataTable('#pokemon', {
+    ajax: 'http://localhost:8080/api/poke/alphabet',
+    columns: [
+        { data: 'name' },
+        { data: 'url' }
+    ]
+});
+</script>
+</head>
+
+<!-- Body contains the contents of the Doc -->
+<body>
+<table id="pokemon" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>URL</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+</body>
+</html>
