@@ -1,78 +1,15 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon List</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        #pokemonContainer {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-top: 20px;
-            width: 300px;
-            height: auto;
-        }
-
-        #pokemonList {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .pokemonItem {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .pokemonItem:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon List</title>
 </head>
 <body>
-    <div id="pokemonContainer">
-        <h1>Pokémon List</h1>
-        <ul id="pokemonList"></ul>
-    </div>
+  <h1>Pokemon List</h1>
+  <ul id="pokemonList"></ul>
 
-    <script>
-        // Fetch data from your API endpoint
-        fetch('/api/poke/alphabet')
-            .then(response => response.json())
-            .then(data => {
-                // Extract the Pokemon list from the response
-                const pokemonList = data.pokemon;
-
-                // Display Pokemon names on the page
-                const pokemonListContainer = document.getElementById('pokemonList');
-                pokemonList.forEach(pokemon => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'pokemonItem';
-                    listItem.textContent = pokemon.name;
-                    pokemonListContainer.appendChild(listItem);
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
