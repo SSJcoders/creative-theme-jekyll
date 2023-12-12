@@ -24,7 +24,6 @@
     <![endif]-->
         <!-- load jQuery and DataTables output style and scripts -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>var define = null;</script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -39,6 +38,14 @@
   margin-right: auto;
 }
 
+.inputNumber {
+  width: 80px;
+  height: 60px;
+  margin: 5px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 25px;
+}
 
 .numberBtn {
   display: table-cell;
@@ -110,24 +117,65 @@
     </header>
     
     <main class="middle">
-      <h1>Fibonacci Pokeballs Generator</h1>
-      <div style="max-width: 600px;">
-        <label for="nthInput">Enter the value of n:</label>
-        <input type="number" id="nthInput" placeholder="Enter nth value" />
-        <label for="methodSelect">Select method:</label>
-        <select id="methodSelect">
-          <option value="recursive">Recursive</option>
-          <option value="iterative">Iterative</option>
-          <option value="matrix">Matrix</option>
-        </select>
-        <button onclick="generatePokeballs()">Generate Pokeballs</button>
-      </div>
-      <div id="pokeballContainer"></div>
-      <div id="generationTime"></div> <!-- New element to display generation time -->
-
-    
+        <h1>Un-Sorted NFL Standings Data</h1>
+        Raw data can be seen  <a href="http://localhost:8080/api/nflstandings/" target="_blank">here</a>
+        <table id="pokemon" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Tm</th>
+            <th>W</th>
+            <th>L</th>
+            <th>W-L%</th>
+            <th>OSRS</th>
+            <th>DSRS</th>
+            <th>PA</th>
+            <th>PD</th>
+            <th>Mov</th>
+            <th>SRS</th>
+            <th>PF</th>
+            <th>SoS</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Tm</th>
+            <th>W</th>
+            <th>L</th>
+            <th>W-L%</th>
+            <th>OSRS</th>
+            <th>DSRS</th>
+            <th>PA</th>
+            <th>PD</th>
+            <th>Mov</th>
+            <th>SRS</th>
+            <th>PF</th>
+            <th>SoS</th>
+        </tr>
+    </tfoot>
+    </table>
     </main>
-    <script src="fibonacci.js"></script>
-    <script src="app2.js"></script>
+<script>
+//{"OSRS":"8.3","DSRS":"6.3","PA":"189","PD":"163","MoV":"13.6","SRS":"14.6","PF":"352","SoS":"1.0","W":"9","W-L%":".750","Tm":"San Francisco 49ers","L":"3"}
+    new DataTable('#pokemon', {
+        ajax: {
+            url: 'http://localhost:8080/api/nflstandings/'
+        },    
+        ordering: false,
+        columns: [
+        	{ data: 'Tm' },
+         	{ data: 'W' },
+        	{ data: 'L' },
+        	{ data: 'W-L%' },
+        	{ data: 'OSRS' },
+            { data: 'DSRS' },
+            { data: 'PA' },
+            { data: 'PD' },
+            { data: 'MoV' },
+            { data: 'SRS' },
+            { data: 'PF' },
+            { data: 'SoS' }
+        ] 
+    });
+</script>
 </body>
 </html>

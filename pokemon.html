@@ -93,6 +93,9 @@
                         <a class="page-scroll" href="/ssj/nfl.html">NFL</a>
                     </li>
                     <li>
+                        <a class="page-scroll" href="/ssj/nfl-backend-unsorted.html">NFL Backend</a>
+                    </li>
+                    <li>
                         <a class="page-scroll" href="/ssj/pokemon-unsorted.html">Pokemon Backend</a>
                     </li>
                     <li>
@@ -134,7 +137,7 @@
 <script>
     new DataTable('#pokemon', {
         ajax: {
-            url: 'http://localhost:8080/api/poke/alphabet'
+            url: 'http://localhost:8080/api/poke/sorted'
         },    
         ordering: false,
         columns: [
