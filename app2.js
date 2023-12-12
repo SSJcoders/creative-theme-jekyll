@@ -1,10 +1,15 @@
 function generatePokeballs() {
     const nthInput = document.getElementById('nthInput');
     const nthValue = parseInt(nthInput.value);
-  
+
     if (isNaN(nthValue) || nthValue < 0) {
       alert('Please enter a valid non-negative integer for n.');
       return;
+    }
+
+    if (nthValue > 25){
+      if (!confirm("Numbers larger than 25 will hang the browser. Continue!"))
+        return;
     }
   
     const methodSelect = document.getElementById('methodSelect');
