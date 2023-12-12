@@ -31,13 +31,16 @@
 
 <script>
     new DataTable('#pokemon', {
-    ajax: 'http://localhost:8080/api/poke',
-    ordering: false,
-    columns: [
-        { data: 'name' },
-        { data: 'url' }
-    ]
-});
+        ajax: {
+            url: 'http://localhost:8080/api/poke',
+            dataSrc: ''
+        },    
+        ordering: false,
+        columns: [
+            { data: 'name' },
+            { data: 'url' }
+        ] 
+    });
 </script>
 </body>
 </html>
