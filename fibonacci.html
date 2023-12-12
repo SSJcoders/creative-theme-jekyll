@@ -1,231 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fibonacci Pokeball Art</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
-        }
-        canvas {
-            border: 1px solid #000;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .info-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .info-container h2 {
-            color: #333;
-        }
-        .info-container p {
-            color: #666;
-        }
-        .controls-container {
-            margin-top: 10px;
-            text-align: center;
-        }
-        .controls-container label {
-            margin-right: 5px;
-        }
-        .controls-container select,
-        .controls-container input,
-        .controls-container button {
-            margin: 5px;
-            padding: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-        .controls-container select,
-        .controls-container input {
-            width: 100px;
-        }
-        .controls-container button {
-            background-color: #007bff;
-            color: #fff;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Fibonacci Pokeballs</title>
 </head>
 <body>
-    <canvas id="fibCanvas" width="800" height="600"></canvas>
-
-    <div class="info-container">
-        <h2 id="fibMethod">Fibonacci Method Used: </h2>
-        <p id="number">Number: </p>
-        <p id="generationTime">Generation Time: </p>
+  <div class="container">
+    <h1>Fibonacci Pokeballs Generator</h1>
+    <div>
+      <label for="nthInput">Enter the value of n:</label>
+      <input type="number" id="nthInput" placeholder="Enter nth value" />
+      <label for="methodSelect">Select method:</label>
+      <select id="methodSelect">
+        <option value="recursive">Recursive</option>
+        <option value="iterative">Iterative</option>
+        <option value="matrix">Matrix</option>
+      </select>
+      <button onclick="generatePokeballs()">Generate Pokeballs</button>
     </div>
-
-    <div class="controls-container">
-        <label for="method">Choose sorting method:</label>
-        <select id="method">
-            <option value="recursive">Recursive</option>
-            <option value="binet">Binet</option>
-            <option value="iterative">Iterative</option>
-            <option value="matrix">Matrix</option>
-        </select>
-        <label for="n">Enter the value of 'n':</label>
-        <input type="number" id="n" value="10" min="1">
-        <button onclick="generateArt()">Generate</button>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('fibCanvas');
-        const ctx = canvas.getContext('2d');
-        const pokeballRadius = 5;
-
-        function fibonacciBinet(n) {
-            const phi = (1 + Math.sqrt(5)) / 2;
-            const sqrt5 = Math.sqrt(5);
-            const fibN = Math.round((Math.pow(phi, n) - Math.pow(1 - phi, n)) / sqrt5);
-            return fibN;
-        }
-
-        function drawPokeball(x, y, size) {
-            ctx.beginPath();
-            ctx.arc(x, y, size * 3.2, 0, Math.PI);
-            ctx.fillStyle = 'white';
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(x, y, size * 3.2, Math.PI, 0);
-            ctx.fillStyle = 'red';
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(x, y, size * 3.2, 0, Math.PI * 2);
-            ctx.fillStyle = 'black';
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(x, y, pokeballRadius, 0, Math.PI * 2);
-            ctx.fillStyle = 'white';
-            ctx.fill();
-        }
-
-        function displayFibMethod(method) {
-            const fibMethodElement = document.getElementById('fibMethod');
-            fibMethodElement.textContent = `Fibonacci Method Used: ${method}`;
-            const numElement = document.getElementById('number');
-            numElement.textContent = `Number: ${document.getElementById('n').value}`;
-        }
-
-        function generateRecursiveArtWithBinet(maxIterations) {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 1;
-            recursiveDrawWithBinet(centerX, centerY - 350, 0.5, maxIterations, 0);
-        }
-
-        function recursiveDrawWithBinet(x, y, size, remainingIterations, angle) {
-            if (remainingIterations > 0) {
-                ctx.beginPath();
-                ctx.arc(x, y, size * 3.2, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 50%)`;
-                ctx.fill();
-
-                const newSize = fibonacciBinet(remainingIterations);
-                const nextX = x + size * 0.05 * Math.cos(angle);
-                const nextY = y + size * 0.05 * Math.sin(angle);
-                drawPokeball(nextX, nextY, newSize * 0.3);
-
-                const newAngle = angle + Math.PI / 3;
-                recursiveDrawWithBinet(nextX, nextY, newSize * 0.3, remainingIterations - 1, newAngle);
-            }
-        }
-
-        function power(matrix, n) {
-            let result = [[1, 0], [0, 1]];
-            while (n > 0) {
-                if (n % 2 === 1) {
-                    result = multiplyMatrices(result, matrix);
-                }
-                matrix = multiplyMatrices(matrix, matrix);
-                n = Math.floor(n / 2);
-            }
-            return result;
-        }
-
-        function multiplyMatrices(matrix1, matrix2) {
-            let result = [];
-            for (let i = 0; i < matrix1.length; i++) {
-                result[i] = [];
-                for (let j = 0; j < matrix2[0].length; j++) {
-                    let sum = 0;
-                    for (let k = 0; k < matrix1[0].length; k++) {
-                        sum += matrix1[i][k] * matrix2[k][j];
-                    }
-                    result[i][j] = sum;
-                }
-            }
-            return result;
-        }
-
-        function fibonacciMatrix(n) {
-            const baseMatrix = [[1, 1], [1, 0]];
-            if (n === 0) return 0;
-            const result = power(baseMatrix, n - 1);
-            return result[0][0];
-        }
-
-        function generateMatrixArt() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            let angle = 0;
-            const scale = 12;
-
-            for (let i = 0; i < document.getElementById('n').value; i++) {
-                const fibNumber = fibonacciMatrix(i);
-                const radius = fibNumber * scale;
-                const x = centerX + radius * 0.5 * Math.cos(angle);
-                const y = centerY + radius * 0.5 * Math.sin(angle);
-                drawPokeball(x, y, fibNumber);
-                angle += Math.PI / 2;
-            }
-        }
-
-        function displayGenerationTime(time) {
-            const generationTimeElement = document.getElementById('generationTime');
-            generationTimeElement.textContent = `Generation Time: ${time.toFixed(2)} milliseconds`;
-        }
-
-        function generateArt() {
-            const method = document.getElementById('method').value;
-            const n = document.getElementById('n').value;
-            const startTime = performance.now();
-
-            displayFibMethod(method);
-
-            switch (method) {
-                case 'recursive':
-                    generateRecursiveArtWithBinet(n);
-                    break;
-                case 'binet':
-                    generateRecursiveArtWithBinet(n);
-                    break;
-                case 'iterative':
-                    // Add your iterative method here if needed
-                    break;
-                case 'matrix':
-                    generateMatrixArt();
-                    break;
-                default:
-                    break;
-            }
-
-            const generationTime = performance.now() - startTime;
-            displayGenerationTime(generationTime);
-        }
-
-        // Call the generateArt function to initialize the drawing
-        generateArt();
-    </script>
+    <div id="pokeballContainer"></div>
+    <div id="generationTime"></div> <!-- New element to display generation time -->
+  </div>
+  <script src="fibonacci.js"></script>
+  <script src="app2.js"></script>
 </body>
 </html>
