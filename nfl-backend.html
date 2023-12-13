@@ -83,10 +83,18 @@
     </header>
     
     <main class="middle">
-        <h1>Sorted Data using java sorted hashmap (TreeMap)</h1>
-        Raw data can be seen  <a href="http://localhost:8080/api/nflstandings/" target="_blank">here</a>
+        <h1>Initially data is sorted using java sorted hashmap (TreeMap) with Team name as key.</h1>
+        <p>Java TreeMap uses Red-Black sorting algorithm. <br>
+        Further sorting on each is accomplished by using Java Collections.sort and providing custom comparators for each column type.</p>
+        <pre style="width:800px"">
+Collections.sort(teamsStandings, new Comparator<JSONObject>() {
+	public int compare(JSONObject o1, JSONObject o2) {
+		// based on the column selected, use the correct compare (Integer, Double, String)
+	}
+});</pre>
+        <p>Raw data can be seen  <a href="http://localhost:8080/api/nflstandings/" target="_blank">here</a></p>
         <div>
-        	<p>NFL Standings data can be sorted on any of the columns in ascending (default) or descending order. Different sorting algorithms can be chosen, each resulting in different execution time.</p>
+        	<p>NFL Standings data can be sorted on any of the columns in ascending (default) or descending order. <!-- Different sorting algorithms can be chosen, each resulting in different execution time. --></p>
         	<label for="sortKey">Select a column to sort:</label>
         	<select name="sortKey" id="sortKey">
         		<option value="Tm">Team</option>
@@ -107,11 +115,11 @@
         		<option value="ASC">Ascending</option>
         		<option value="DESC">Descending</option>
         	</select>
-        	<br><label for="algorithm">Select a sort order:</label>
+        	<!-- <br><label for="algorithm">Select a sort order:</label>
         	<select name="algorithm" id="algorithm">
         		<option value="QUICK">Quick Sort</option>
         		<option value="BUBBLE">Bubble Sort</option>
-        	</select>
+        	</select> -->
         	<br><button name="sort" id="sort" value="Sort" onclick="doSort();">Sort</button><div id="timetaken"></div>
         </div>
         <table id="pokemon" class="display" style="width:100%">
@@ -194,7 +202,8 @@ function loadData(){
 function doSort() {
 	let sortKey = document.getElementById("sortKey").value;
 	let sortOrder = document.getElementById("sortOrder").value;
-	let algorithm = document.getElementById("algorithm").value;
+	// algorithm is unimplement
+	let algorithm = "BINARY";//document.getElementById("algorithm").value;
 	console.log("Sort Key: " + sortKey);
 	console.log("Sort Order: " + sortOrder);
 	console.log("Algorithm: " + algorithm);
