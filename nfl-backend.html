@@ -29,7 +29,6 @@
     <script>var define = null;</script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 </head>
-
 <style>
     .middle {
   width: fit-content;
@@ -38,42 +37,8 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-.inputNumber {
-  width: 80px;
-  height: 60px;
-  margin: 5px;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 25px;
-}
-
-.numberBtn {
-  display: table-cell;
-  width: 100px;
-  height: 100px;
-  background-color: dimgrey;
-  color: white;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 25px;
-  border: 1px solid white;
-}
-.numberBtn:hover {
-  background-color: grey;
-}
-
-.fnBtn {
-  background-color: white;
-  width: 80px;
-  height: 30px;
-  margin: 5px;
-}
-#scoreBox {
-  font-size: 30px;
-}
 </style>
-<body>
+<body onload="loadData();">
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -120,81 +85,142 @@
     <main class="middle">
         <h1>Sorted Data using java sorted hashmap (TreeMap)</h1>
         Raw data can be seen  <a href="http://localhost:8080/api/nflstandings/" target="_blank">here</a>
+        <div>
+        	<p>NFL Standings data can be sorted on any of the columns in ascending (default) or descending order. Different sorting algorithms can be chosen, each resulting in different execution time.</p>
+        	<label for="sortKey">Select a column to sort:</label>
+        	<select name="sortKey" id="sortKey">
+        		<option value="Tm">Team</option>
+        		<option value="W">Wins</option>
+        		<option value="L">Losses</option>
+        		<option value="W-L">Win Loss Percentage</option>
+				<option value="PF">Points For (Total points scored by the team.)</option>
+				<option value="PA">Points Against (Total points allowed by the team.)</option>
+				<option value="PD">Point Differential (Difference between points scored and points allowed.)</option>
+				<option value="MoV">Margin of Victory (Average difference in score in games won.)</option>
+				<option value="SoS">Strength of Schedule (Difficulty of a team’s past schedule; positive means harder.)</option>
+				<option value="SRS">Simple Rating System (Rating that considers point differential and strength of schedule.)</option>
+				<option value="OSRS">Offensive Simple Rating System (Measure of a team’s offensive quality.)</option>
+				<option value="DSRS">Defensive Simple Rating System (Measure of a team’s defensive quality.)</option>
+        	</select>
+        	<br><label for="sortOrder">Select a sort order:</label>
+        	<select name="sortOrder" id="sortOrder">
+        		<option value="ASC">Ascending</option>
+        		<option value="DESC">Descending</option>
+        	</select>
+        	<br><label for="algorithm">Select a sort order:</label>
+        	<select name="algorithm" id="algorithm">
+        		<option value="QUICK">Quick Sort</option>
+        		<option value="BUBBLE">Bubble Sort</option>
+        	</select>
+        	<br><button name="sort" id="sort" value="Sort" onclick="doSort();">Sort</button><div id="timetaken"></div>
+        </div>
         <table id="pokemon" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>Tm</th>
-            <th>W</th>
-            <th>L</th>
-            <th>W-L%</th>
-			<th>PF</th>
-            <th>PA</th>
-            <th>PD</th>
-            <th>Mov</th>
-			<th>SoS</th>
-            <th>SRS</th>
-			<th>OSRS</th>
-            <th>DSRS</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Tm</th>
-            <th>W</th>
-            <th>L</th>
-            <th>W-L%</th>
-			<th>PF</th>
-            <th>PA</th>
-            <th>PD</th>
-            <th>Mov</th>
-			<th>SoS</th>
-            <th>SRS</th>
-			<th>OSRS</th>
-            <th>DSRS</th>
-        </tr>
-    </tfoot>
-    </table>
-    
-    <div>
-    <h2>Legend</h2>
-    <ul>
-		<li><strong>Tm</strong>: Team</li>
-		<li><strong>W</strong>: Wins</li>
-		<li><strong>L</strong>: Losses</li>
-		<li><strong>W-L%</strong>: Win-Loss Percentage (Percentage of games won by a team.)</li>
-		<li><strong>PF</strong>: Points For (Total points scored by the team.)</li>
-		<li><strong>PA</strong>: Points Against (Total points allowed by the team.)</li>
-		<li><strong>PD</strong>: Point Differential (Difference between points scored and points allowed.)</li>
-		<li><strong>MoV</strong>: Margin of Victory (Average difference in score in games won.)</li>
-		<li><strong>SoS</strong>: Strength of Schedule (Difficulty of a team’s past schedule; positive means harder.)</li>
-		<li><strong>SRS</strong>: Simple Rating System (Rating that considers point differential and strength of schedule.)</li>
-		<li><strong>OSRS</strong>: Offensive Simple Rating System (Measure of a team’s offensive quality.)</li>
-		<li><strong>DSRS</strong>: Defensive Simple Rating System (Measure of a team’s defensive quality.)</li>
-	</ul>
-    </div>
+		    <thead>
+		        <tr>
+		            <th>Tm</th>
+		            <th>W</th>
+		            <th>L</th>
+		            <th>W-L%</th>
+					<th>PF</th>
+		            <th>PA</th>
+		            <th>PD</th>
+		            <th>Mov</th>
+					<th>SoS</th>
+		            <th>SRS</th>
+					<th>OSRS</th>
+		            <th>DSRS</th>
+		        </tr>
+		    </thead>
+		    <tfoot>
+		        <tr>
+		            <th>Tm</th>
+		            <th>W</th>
+		            <th>L</th>
+		            <th>W-L%</th>
+					<th>PF</th>
+		            <th>PA</th>
+		            <th>PD</th>
+		            <th>Mov</th>
+					<th>SoS</th>
+		            <th>SRS</th>
+					<th>OSRS</th>
+		            <th>DSRS</th>
+		        </tr>
+		    </tfoot>
+		</table>
+	    <div>
+		    <h2>Legend</h2>
+		    <ul>
+				<li><strong>Tm</strong>: Team</li>
+				<li><strong>W</strong>: Wins</li>
+				<li><strong>L</strong>: Losses</li>
+				<li><strong>W-L%</strong>: Win-Loss Percentage (Percentage of games won by a team.)</li>
+				<li><strong>PF</strong>: Points For (Total points scored by the team.)</li>
+				<li><strong>PA</strong>: Points Against (Total points allowed by the team.)</li>
+				<li><strong>PD</strong>: Point Differential (Difference between points scored and points allowed.)</li>
+				<li><strong>MoV</strong>: Margin of Victory (Average difference in score in games won.)</li>
+				<li><strong>SoS</strong>: Strength of Schedule (Difficulty of a team’s past schedule; positive means harder.)</li>
+				<li><strong>SRS</strong>: Simple Rating System (Rating that considers point differential and strength of schedule.)</li>
+				<li><strong>OSRS</strong>: Offensive Simple Rating System (Measure of a team’s offensive quality.)</li>
+				<li><strong>DSRS</strong>: Defensive Simple Rating System (Measure of a team’s defensive quality.)</li>
+			</ul>
+	    </div>
     </main>
 <script>
-//{"OSRS":"8.3","DSRS":"6.3","PA":"189","PD":"163","MoV":"13.6","SRS":"14.6","PF":"352","SoS":"1.0","W":"9","W-L%":".750","Tm":"San Francisco 49ers","L":"3"}
-    new DataTable('#pokemon', {
-        ajax: {
-            url: 'http://localhost:8080/api/nflstandings/sorted/'
-        },    
-        ordering: false,
-        columns: [
-        	{ data: 'Tm' },
-         	{ data: 'W' },
-        	{ data: 'L' },
-        	{ data: 'W-L%' },
-        	{ data: 'PF' },
-            { data: 'PA' },
-            { data: 'PD' },
-            { data: 'MoV' },
-            { data: 'SoS' },
+function loadData(){
+	console.log("Loading Data");
+	new DataTable('#pokemon', {
+		ajax: {
+			url: 'http://localhost:8080/api/nflstandings/sorted/'
+		},    
+		ordering: false,
+		columns: [
+			{ data: 'Tm' },
+			{ data: 'W' },
+			{ data: 'L' },
+			{ data: 'W-L%' },
+			{ data: 'PF' },
+			{data: 'PA' },
+			{ data: 'PD' },
+			{ data: 'MoV' },
+			{ data: 'SoS' },
 			{ data: 'SRS' },
-            { data: 'OSRS' },
-            { data: 'DSRS' }
-        ] 
-    });
+			{ data: 'OSRS' },
+			{ data: 'DSRS' }
+		] 
+	});
+}
+
+function doSort() {
+	let sortKey = document.getElementById("sortKey").value;
+	let sortOrder = document.getElementById("sortOrder").value;
+	let algorithm = document.getElementById("algorithm").value;
+	console.log("Sort Key: " + sortKey);
+	console.log("Sort Order: " + sortOrder);
+	console.log("Algorithm: " + algorithm);
+	$('#pokemon').DataTable().clear().destroy();
+	
+	new DataTable('#pokemon', {
+		ajax: {
+			url: 'http://localhost:8080/api/nflstandings/sorted/'+sortKey+'/'+sortOrder+'/'+algorithm
+		},    
+		ordering: false,
+		columns: [
+			{ data: 'Tm' },
+			{ data: 'W' },
+			{ data: 'L' },
+			{ data: 'W-L%' },
+			{ data: 'PF' },
+			{data: 'PA' },
+			{ data: 'PD' },
+			{ data: 'MoV' },
+			{ data: 'SoS' },
+			{ data: 'SRS' },
+			{ data: 'OSRS' },
+			{ data: 'DSRS' }
+		] 
+	});
+}
 </script>
 </body>
 </html>
