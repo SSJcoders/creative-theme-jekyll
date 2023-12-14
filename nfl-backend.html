@@ -115,11 +115,11 @@ Collections.sort(teamsStandings, new Comparator<JSONObject>() {
         		<option value="ASC">Ascending</option>
         		<option value="DESC">Descending</option>
         	</select>
-        	<!-- <br><label for="algorithm">Select a sort order:</label>
+        	<br><label for="algorithm">Select a sort order:</label>
         	<select name="algorithm" id="algorithm">
-        		<option value="QUICK">Quick Sort</option>
+        		<option value="JAVA">Java Default (MergeSort)</option>
         		<option value="BUBBLE">Bubble Sort</option>
-        	</select> -->
+        	</select>
         	<br><button name="sort" id="sort" value="Sort" onclick="doSort();">Sort</button><div id="timetaken"></div>
         </div>
         <table id="pokemon" class="display" style="width:100%">
@@ -203,8 +203,7 @@ function loadData(){
 function doSort() {
 	let sortKey = document.getElementById("sortKey").value;
 	let sortOrder = document.getElementById("sortOrder").value;
-	// algorithm is unimplement
-	let algorithm = "BINARY";//document.getElementById("algorithm").value;
+	let algorithm = document.getElementById("algorithm").value;
 	console.log("Sort Key: " + sortKey);
 	console.log("Sort Order: " + sortOrder);
 	console.log("Algorithm: " + algorithm);
