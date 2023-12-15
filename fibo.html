@@ -73,6 +73,29 @@
   <!-- <button onclick="updateBalls()">Update Balls</button> -->
   <canvas id="fibonacciCanvas" width="600" height="400"></canvas>
         </div>
+
+        <input type="number" id="numInput" value = "0" placeholder="Enter a number">
+        <table class="type11">
+            <thead>
+            <tr>
+              <th scope="cols">Method</th>
+              <th scope="cols">List</th>
+              <th scope="cols">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id = "Calculation">
+              <td >Mathematical Formula</th>
+              <td id = "NumValue1"></th>
+              <td id = "time1"></th>
+            </tr>
+            <tr id = "Recursion">
+                <td >Recursion</th>
+                <td id = "NumValue2"></th>
+                <td id = "time2"></th>
+              </tr>
+            </tbody>
+          </table>
         
 
         <script>
@@ -91,7 +114,8 @@
               ctx.closePath();
             }
         
-            function update() {
+            async function update() {
+            
               ctx.clearRect(0, 0, canvas.width, canvas.height);
         
               for (let i = 0; i < fibonacciBalls.length; i++) {
@@ -113,14 +137,65 @@
                 // Draw the ball
                 drawBall(ball.x, ball.y, ball.radius);
               }
-            }
-        
-            function fibonacci(n) {
-                if(n <= 1) {
-                    return 1;
+              try {
+            const response = await fetch("http://localhost:8085/api/fibo/rec", {
+                method: "POST",
+                cache: 'no-cache',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(numInput)
+                });
+
+                if (response.ok) {
+                    
+                    const responseData = await response.json();
+                    let newArr = [0, 1]; 
+ 
+                    let fib = (n) => { 
+                        if (newArr[n] !== undefined){ 
+                        return newArr[n]; 
+                        }
+                        newArr[n] = fib(n - 1) + fib(n - 2); 
+                        return newArr[n];
+                    };
+                    fib(responseData);
+                    document.getElementById("time2").textContent = responseData;
+                    document.getElementById("NumValue2").textContent = newArr;
+                    
                 } else {
-                    return fibonacci(n-1) + fibonacci(n-2);
+                    console.error("API request failed");
                 }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            
+            
+            try {
+            const response = await fetch("http://localhost:8085/api/fibo/cal", {
+                method: "POST",
+                cache: 'no-cache',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(numInput)
+                });
+
+                if (response.ok) {
+                    
+                    const responseData = await response.json();
+                    
+                    fib(responseData);
+                    document.getElementById("time1").textContent = responseData;
+                    document.getElementById("NumValue1").textContent = newArr;
+                    
+                } else {
+                    console.error("API request failed");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+              
             }
         
             function initializeBalls(numBalls) {
