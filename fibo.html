@@ -21,6 +21,17 @@
                 border: 1px solid gray;
                 vertical-align: middle;
             }
+            table {
+     border-collapse: collapse;
+     width: 100%;
+}
+
+th, td {
+     padding: 10px;
+     border-bottom: 1px solid #CD5C5C;
+}
+
+tr:hover { background-color: #F5F5F5; }
         </style>
     </head>
     <body>
@@ -70,11 +81,13 @@
         </header>
         <div style="text-align:center;">
             <input type="number" id="numInput" value = "0" placeholder="Enter a number">
+            <div id="numB"></div>
   <!-- <button onclick="updateBalls()">Update Balls</button> -->
   <canvas id="fibonacciCanvas" width="600" height="400"></canvas>
         </div>
 
-        <input type="number" id="numInput" value = "0" placeholder="Enter a number">
+        <input type="number" id="numInput1"  placeholder="Enter a number">
+        <button onclick="apiClick()">CLick</button>
         <table class="type11">
             <thead>
             <tr>
@@ -90,7 +103,7 @@
               <td id = "time1"></th>
             </tr>
             <tr id = "Recursion">
-                <td >Recursion</th>
+                <td >For loop</th>
                 <td id = "NumValue2"></th>
                 <td id = "time2"></th>
               </tr>
@@ -102,6 +115,72 @@
             const canvas = document.getElementById('fibonacciCanvas');
             const ctx = canvas.getContext('2d');
             const numInput = document.getElementById('numInput');
+            const numInput1 = document.getElementById('numInput1');
+            
+            async function apiClick() {
+    console.log(parseInt(numInput1.value, 10));
+    const numData = {
+        "number": parseInt(numInput1.value, 10)
+    };
+
+    try {
+        const response1 = await fetch("http://localhost:8085/api/fibo/rec", {
+            method: "POST",
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(numData)
+        });
+
+        if (response1.ok) {
+            const responseData = await response1.text();
+            let result2 = [0, 1];
+            for (let i = 2; i <= parseInt(numInput1.value, 10); i++) {
+                result2.push(result2[i - 2] + result2[i - 1]);
+            }
+            document.getElementById("time2").textContent = responseData;
+            document.getElementById("NumValue2").textContent = result2;
+        } else {
+            console.error("API request failed");
+        }
+
+        const response2 = await fetch("http://localhost:8085/api/fibo/cal", {
+            method: "POST",
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(numData)
+        });
+
+        if (response2.ok) {
+            const responseData = await response2.text(); // Change to text() instead of json()
+            let result = [0, 1];
+            for (let i = 2; i <= parseInt(numInput1.value, 10); i++) {
+                result.push(result[i - 2] + result[i - 1]);
+            }
+            document.getElementById("time1").textContent = responseData;
+            document.getElementById("NumValue1").textContent = result;
+        } else {
+            console.error("API request failed");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+
+function generateFibonacci(length) {
+    var result = [];
+    result[0] = 0;
+    result[1] = 1;
+    for (var i = 2; i < length; i++) {
+        result[i] = result[i - 1] + result[i - 2];
+    }
+    return result;
+}
+            
         
             const fibonacciBalls = [];
             let fibonacciIndex = 0;
@@ -114,8 +193,8 @@
               ctx.closePath();
             }
         
-            async function update() {
-            
+            function update() {
+                
               ctx.clearRect(0, 0, canvas.width, canvas.height);
         
               for (let i = 0; i < fibonacciBalls.length; i++) {
@@ -137,69 +216,21 @@
                 // Draw the ball
                 drawBall(ball.x, ball.y, ball.radius);
               }
-              try {
-            const response = await fetch("http://localhost:8085/api/fibo/rec", {
-                method: "POST",
-                cache: 'no-cache',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(numInput)
-                });
-
-                if (response.ok) {
-                    
-                    const responseData = await response.json();
-                    let newArr = [0, 1]; 
- 
-                    let fib = (n) => { 
-                        if (newArr[n] !== undefined){ 
-                        return newArr[n]; 
-                        }
-                        newArr[n] = fib(n - 1) + fib(n - 2); 
-                        return newArr[n];
-                    };
-                    fib(responseData);
-                    document.getElementById("time2").textContent = responseData;
-                    document.getElementById("NumValue2").textContent = newArr;
-                    
-                } else {
-                    console.error("API request failed");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
-            
-            
-            try {
-            const response = await fetch("http://localhost:8085/api/fibo/cal", {
-                method: "POST",
-                cache: 'no-cache',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(numInput)
-                });
-
-                if (response.ok) {
-                    
-                    const responseData = await response.json();
-                    
-                    fib(responseData);
-                    document.getElementById("time1").textContent = responseData;
-                    document.getElementById("NumValue1").textContent = newArr;
-                    
-                } else {
-                    console.error("API request failed");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
+              
               
             }
-        
+            function fibonacci(n){
+                if(n <= 1){
+                return n;
+                } else {
+                    return fibonacci(n-1) + fibonacci(n-2) 
+                }
+
+    
+            }
             function initializeBalls(numBalls) {
               const fibSequence = fibonacci(numBalls);
+              document.getElementById("numB").innerHTML = fibSequence;
               fibonacciBalls.length = 0;
         
               for (var i = 0; i < fibSequence; i++) {

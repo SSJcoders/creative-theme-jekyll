@@ -14,6 +14,7 @@
   text-align: center;
   line-height: 1.5;
   margin: 20px 10px;
+  margin: 0 auto;
 }
 table.type11 th {
   width: 155px;
@@ -22,6 +23,7 @@ table.type11 th {
   vertical-align: top;
   color: #fff;
   background: #ce4869 ;
+  margin: 0 auto;
 }
 table.type11 td {
   width: 155px;
@@ -29,6 +31,7 @@ table.type11 td {
   vertical-align: top;
   border-bottom: 1px solid #ccc;
   background: #eee;
+  margin: 0 auto;
 }
 .navbar {
   display: flex;
@@ -76,6 +79,15 @@ table.type11 td {
   width: 100%;
   padding: 20px;
 }
+#block {					
+            border: dashed red 3px;	
+            width:800px;
+            margin: 0 auto;
+        }
+
+        .inline { 						
+            background-color:aquamarine; 
+        }
 
 /* Footer */
 .footer {
@@ -88,27 +100,217 @@ input[type=range] {
 	-webkit-appearance: none;
 	background: blue;
 }
+* {
+  margin: 0;
+  padding: 0;
+  border-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d2f7d3;
+}
+
+#cursor {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-transfrm: transform;
+}
+
+.cursor__inner {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #9e57d9;
+  transition: all .6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hide .cursor__inner {
+  opacity: 0;
+  width: 2.5vw;
+  height: 2.5vw;
+}
+
+#cursor.overlay {
+  z-index: 1;
+}
+
+.overlay .cursor__inner {
+  width: 3rem;
+  height: 3rem;
+  background-color: #c185f230;
+  border-color: transparent;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  text-decoration: none;
+  border-radius: 50%;
+  border: 1px solid #c185f2;
+  text-align: center;
+  color: #9e57d9;
+  font-family: "Venn-extended", sans-serif;
+  text-transform: uppercase;
+  font-weight: bolder;
+  transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.button .button-text {
+  position: absolute;
+}
+
+.button .foreground-text {
+  opacity: 0;
+  z-index: 1;
+  color: #f7f7f7;
+}
+
+.button::after {
+  content: "";
+  position: relative;
+  z-index: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: all .6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    border-color: transparent;
+  }
+  
+  .button:hover::after {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .button:hover .button-text.foreground-text {
+    opacity: 1;
+    color: #9e57d9;
+  }
+}
+.rad-label {
+  display: flex;
+  align-items: center;
+
+  border-radius: 100px;
+  padding: 14px 16px;
+  margin: 10px 0;
+
+  cursor: pointer;
+  transition: .3s;
+}
+
+.rad-label:hover,
+.rad-label:focus-within {
+  background: hsla(0, 0%, 80%, .14);
+}
+
+.rad-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  z-index: -1;
+}
+
+.rad-design {
+  width: 22px;
+  height: 22px;
+  border-radius: 100px;
+
+  background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
+  position: relative;
+}
+
+.rad-design::before {
+  content: '';
+
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+
+  background: hsl(0, 0%, 90%);
+  transform: scale(1.1);
+  transition: .3s;
+}
+
+.rad-input:checked+.rad-design::before {
+  transform: scale(0);
+}
+
+.rad-text {
+  color: hsl(0, 0%, 60%);
+  margin-left: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 900;
+
+  transition: .3s;
+}
+
+.rad-input:checked~.rad-text {
+  color: hsl(0, 0%, 40%);
+}
+
+
+.abs-site-link {
+  position: fixed;
+  bottom: 40px;
+  left: 20px;
+  color: hsla(0, 0%, 0%, .5);
+  font-size: 16px;
+}
 </style>
 <body>
   <div class="content">
     <h1>Sorting Algorithms</h1>
-
-    <form name="flexForm">
-        <label><input type="radio" name="fDTypes" value="BubbleSort" checked/>Bubble Sort</label>
-        <label><input type="radio" name="fDTypes" value="MergeSort"/>Merge Sort</label>
-        <label><input type="radio" name="fDTypes" value="InsertionSort"/>Insertion Sort</label>
-        <label><input type="radio" name="fDTypes" value="SelectionSort"/>Selection Sort</label>
-    </form>
-
-    <br>
-    <div>
-        <input type="number" id="InputNumber" placeholder="Enter Number!"> 
-        <button onclick="setValue()">Set value</button>
+    <div id ="block">
+        <form name="flexForm">
+            <label class="rad-label"><input type="radio" name="fDTypes" value="MergeSort" class="rad-input" name="rad" checked><div class="rad-design"></div>Merge Sort </label>
+        
+            <label class="rad-label"><input type="radio" name="fDTypes" value="BubbleSort" class="rad-input" name="rad"><div class="rad-design"></div>Bubble Sort</label>
+        
+            <label class="rad-label"><input type="radio" name="fDTypes" class="rad-input" value="InsertionSort" name="rad"><div class="rad-design"></div>Insertion Sort</label>
+            <label class="rad-label"><input type="radio" name="fDTypes" class="rad-input" value="SelectionSort" name="rad"><div class="rad-design"></div>Selection Sort</label>
+        </form>
+        
+          
+        <br>
+        <div>
+            <input type="number" id="InputNumber" placeholder="Enter Number!"> 
+            <button onclick="setValue()">Set value</button>
+        </div>
+        
+        <font size = 2 id = "slider_value_view">10000</font> 
+        <input class="slider_range" oninput = 'ShowSliderValue(this.value)' value="10000" style="width: 800px" type="range" min="10000" max="100000" id="userInput" autofocus>
+    
     </div>
     
-    <font size = 2 id = "slider_value_view">10000</font> 
-    <input class="slider_range" oninput = 'ShowSliderValue(this.value)' value="10000" type="range" min="10000" max="100000" id="userInput" autofocus>
-
     <br><br>
     <table class="type11">
         <thead>
@@ -127,7 +329,15 @@ input[type=range] {
         </tbody>
       </table>
     <br><br>
-    <button id="addButton" onclick="Sorting()">Click for Sorting</button>
+    <div class="container">
+        <div id="cursor">
+          <div class="cursor__inner"></div>
+        </div>
+        <a class="button" onclick="Sorting()" cursor-class="overlay">
+            <span class="button-text">Click</span>
+            <span class="button-text foreground-text">Sort</span>
+          </a>
+    </div>
     <br><br>
     <button id="graphButton" onclick="createGraph()" >Show Graph</button>
     <div id ="myDiv"></div>
@@ -138,6 +348,46 @@ input[type=range] {
 </body>
 </html>
 <script>
+    const cursor = document.querySelector("#cursor")
+
+let mouse = { x: -100, y: -100 }
+let pos = { x: 0, y: 0 }
+const speed = 0.1
+
+const updateCoordinates = (e) => {
+  mouse.x = e.clientX
+  mouse.y = e.clientY
+}
+
+window.addEventListener("mousemove", updateCoordinates)
+
+const updatePosition = () => {
+  pos.x += (mouse.x - pos.x) * speed
+  pos.y += (mouse.y - pos.y) * speed
+  cursor.style.transform =
+    "translate3d(" + pos.x + "px ," + pos.y + "px, 0)"
+}
+
+const loop = () => {
+  updatePosition()
+  requestAnimationFrame(loop)
+}
+
+requestAnimationFrame(loop)
+
+const cursorModifiers = document.querySelectorAll("[cursor-class]")
+
+cursorModifiers.forEach((cursorModifier) => {
+  cursorModifier.addEventListener("mouseenter", function () {
+    let attribute = this.getAttribute("cursor-class")
+    cursor.classList.add(attribute)
+  })
+  
+  cursorModifier.addEventListener("mouseleave", function () {
+    let attribute = this.getAttribute("cursor-class")
+    cursor.classList.remove(attribute)
+  })
+})
 async function Sorting() {
     url = "http://localhost:8085/api/";
     var num = document.getElementById("userInput").value;
